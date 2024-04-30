@@ -1,4 +1,5 @@
 const usersService = require('./users-service');
+const usersRepository = require('./users-repository');
 const { errorResponder, errorTypes } = require('../../../core/errors');
 
 /**
@@ -10,7 +11,13 @@ const { errorResponder, errorTypes } = require('../../../core/errors');
  */
 async function getUsers(request, response, next) {
   try {
-    const users = await usersService.getUsers();
+    const { page_number, page_size, search, sort } = request.query;
+    const users = await usersService.getUsers(
+      page_number,
+      page_size,
+      search,
+      sort
+    );
     return response.status(200).json(users);
   } catch (error) {
     return next(error);
@@ -26,10 +33,10 @@ async function getUsers(request, response, next) {
  */
 async function getUser(request, response, next) {
   try {
-    const user = await usersService.getUser(request.params.id);
+    const user = await usersService.getUser(id);
 
     if (!user) {
-      throw errorResponder(errorTypes.UNPROCESSABLE_ENTITY, 'Unknown user');
+      throw errorResponder(errorTypes.NOT_FOUND, 'User not found!');
     }
 
     return response.status(200).json(user);

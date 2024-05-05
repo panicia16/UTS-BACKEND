@@ -1,10 +1,9 @@
-const productSchema = {
+const Online_ShopSchema = {
   nama_produk: String,
-  id_produk: Number,
-  harga_produk: Number,
+  harga_produk: String,
   deskripsi_produk: String,
   kategori_produk: String,
   quantity_produk: Number,
 };
 
-module.exports = productSchema;
+module.exports = Online_ShopSchema;

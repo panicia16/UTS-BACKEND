@@ -28,7 +28,7 @@ async function getOnlineShops(request, response, next) {
  */
 async function getonline_shop(request, response, next) {
   try {
-    const online_shop = await Online_ShopService.getOnlineShops(
+    const online_shop = await Online_ShopService.getonline_shop(
       request.params.id
     );
 

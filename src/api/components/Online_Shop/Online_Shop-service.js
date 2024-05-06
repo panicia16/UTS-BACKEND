@@ -37,7 +37,7 @@ async function getOnlineShops() {
  * @returns {Object}
  */
 async function getonline_shop(id) {
-  const online_shop = await Online_ShopRepository.getOnlineShops(id);
+  const online_shop = await Online_ShopRepository.getonline_shop(id);
 
   // OnlineShops not found
   if (!online_shop) {
@@ -79,6 +79,21 @@ async function createOnline_Shop(
       kategori_produk,
       quantity_produk
     );
+    if (!nama_produk || !harga_produk || !quantity_produk) {
+      throw errorResponder(
+        errorTypes.INVALID_INPUT,
+        'Nama Produk, Harga Produk, dan Quantity Produk harus diisi'
+      );
+    }
+
+    const existingProduct =
+      await Online_ShopRepository.nama_produkIsCreated(nama_produk);
+    if (existingProduct) {
+      throw errorResponder(errorTypes.DUPLICATE_RESOURCE, 'Produk sudah ada');
+    }
+
+    await Online_ShopRepository.createOnline_Shop(data);
+    return true;
   } catch (err) {
     return null;
   }
